@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game: Paper Rock AND SCISSORS</title>
+</head>
+<body>
+    <script>
+
+
+
+        function game() {
+            for (i = 0; i < 4; i++) {
+                const playerSelection = playerChoice();
+                const computerSelection = randomChoice();
+                playRound(playerSelection, computerSelection);
+                if (roundWinner === "player") { playerScore++; console.log(roundStatus); console.log("Player:" + playerScore + " VS Computer: " + computerScore); };
+                if (roundWinner === "computer") { computerScore++; console.log(roundStatus); console.log("Player:" + playerScore + " VS Computer: " + computerScore); };
+                if (roundWinner === "draw") { computerScore += 0; console.log(roundStatus); console.log("Player:" + playerScore + " VS Computer: " + computerScore); };
+            }
+            if (playerScore > computerScore) {
+                console.log(`!!!  Player wins  !!! 
+                     Player:    ${playerScore}
+                     Computer:  ${computerScore}  `);
+            } else if (computerScore > playerScore) {
+                console.log(`!!!  Computer wins  !!!
+                  Computer:  ${computerScore}
+                 Player:    ${playerScore}`);
+            } else {
+                console.log(`
+                    !!! You Drew !!!
+                    Computer:  ${computerScore}
+                    Player:    ${playerScore}
+                    `)
+            };
+        }
+
+        function playRound(playerSelection, computerSelection) {
+            if (playerSelection === computerSelection) {
+                roundStatus = `YOU DREW! ${playerSelection} VS ${computerSelection}`;
+                roundWinner = "draw";
+                return { roundStatus, roundWinner };
+            }
+
+            if (
+                (playerSelection === "rock" && computerSelection === "scissors") ||
+                (playerSelection === "scissors" && computerSelection === "paper") ||
+                (playerSelection === "paper" && computerSelection === "rock")
+            ) {
+                roundStatus = `YOU WON! ${playerSelection} Beats ${computerSelection} `;
+                roundWinner = "player";
+                return { roundStatus, roundWinner };
+            }
+
+            if (
+                (computerSelection === "rock" && playerSelection === "scissors") ||
+                (computerSelection === "scissors" && playerSelection === "paper") ||
+                (computerSelection === "paper" && playerSelection === "rock")
+            ) {
+                roundStatus = `YOU Loss! ${computerSelection} Beats ${playerSelection}`;
+                roundWinner = "computer";
+                return { roundStatus, roundWinner };
+            } else {
+                alert("select the right value");
+            }
+
+            //console.log(updateRoundStatus(roundWinner, playerSelection, computerSelection));
+        }
+
+        let playerScore = 0;
+        let computerScore = 0;
+        let roundStatus = "";
+        let roundWinner = "";
+
+
+        console.log(game());
+
+        // PLAYERS and COMPUTER CHOICE
+        function randomChoice() {
+            let choice = ["rock", "paper", "scissors"];
+            random = choice[Math.floor(Math.random() * choice.length)];
+            return random.toLowerCase();
+        }
+        function playerChoice() {
+            return prompt("whats your choice").toLowerCase();
+        }
+
+
+    </script>
+</body>
+</html>
