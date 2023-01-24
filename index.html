@@ -1,92 +1,206 @@
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game: Paper Rock AND SCISSORS</title>
+    <title>game</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://kit.fontawesome.com/01ed512d0d.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
+
+    <div class="head">
+        <h2>Kizzylion</h2>
+        <h1>Rock, Scissors and Paper Game</h1>
+    </div>
+
+    <div class="main">
+        <div class="choices">
+            <div class="playerchoice space" style="border: 1px solid grey;">
+                <div class="displayName">Player</div>
+                <p class="playerValue value" style="text-align: center;">--</p>
+                <div class="pScore" style="text-align: center; font-size: 5vh;"></button></div>
+            </div>
+            <div class="space  mid">
+                <p class="vs" style="text-align: center;"> Vs
+                <p>
+                <div class="status">Ready</div>
+            </div>
+            <div class="computerchoice space" style="border: 1px solid gray;">
+                <div class="displayName">Computer</div>
+                <p class="computerValue value" style="text-align: center;">--</p>
+                <div class="cScore" style="text-align: center; font-size: 5vh;"></div>
+            </div>
+        </div>
+
+        <div class="keys">
+            <button id="rock" class="btn" id="rock">
+                <i id="rock" class="fa-solid fa-hand-back-fist"></i>
+            </button>
+            <button id="paper" class="btn" id="paper">
+                <i id="paper" class="fa-solid fa-hand"></i>
+            </button>
+            <button class="btn" id="scissors">
+                <i id="scissors" class="fa-solid fa-hand-scissors"></i>
+            </button>
+        </div>
+
+    </div>
+
+
+    
+
+    <div class="modal" id="endGame">
+        <p class="declare"></p>
+        <button class="restart">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            Restart
+        </button>
+    </div>
+    <div class="overlay"></div>
+    <footer>
+        <p style="display: inline;">
+            Copyright ©
+            <script> document.write(new Date().getFullYear())</script>
+            Kizzylion
+        </p>
+        <a href="https://github.com/kizzylion" target="_blank">
+            <i class="fa-brands fa-github"></i>
+        </a>
+    </footer>
+
     <script>
 
 
-
-        function game() {
-            for (i = 0; i < 4; i++) {
-                const playerSelection = playerChoice();
-                const computerSelection = randomChoice();
-                playRound(playerSelection, computerSelection);
-                if (roundWinner === "player") { playerScore++; console.log(roundStatus); console.log("Player:" + playerScore + " VS Computer: " + computerScore); };
-                if (roundWinner === "computer") { computerScore++; console.log(roundStatus); console.log("Player:" + playerScore + " VS Computer: " + computerScore); };
-                if (roundWinner === "draw") { computerScore += 0; console.log(roundStatus); console.log("Player:" + playerScore + " VS Computer: " + computerScore); };
-            }
-            if (playerScore > computerScore) {
-                console.log(`!!!  Player wins  !!! 
-                     Player:    ${playerScore}
-                     Computer:  ${computerScore}  `);
-            } else if (computerScore > playerScore) {
-                console.log(`!!!  Computer wins  !!!
-                  Computer:  ${computerScore}
-                 Player:    ${playerScore}`);
-            } else {
-                console.log(`
-                    !!! You Drew !!!
-                    Computer:  ${computerScore}
-                    Player:    ${playerScore}
-                    `)
-            };
+        function randomChoice() {
+            let choice = ["rock", "paper", "scissors"];
+            random = choice[Math.floor(Math.random() * choice.length)];
+            return random.toLowerCase();
         }
+        function endGame() {
+            if (playerScore.innerText > computerScore.innerText) {
+                winner.textContent = "Player wins Battle";
+                status.style.display = "none";
+            } else if (playerScore.innerText < computerScore.innerText) {
+                winner.textContent = "Computer wins Battle";
+                status.style.display = "none";
+            }
+            endDisplay.style.display = "flex";
+        }
+        restart = document.querySelector(".restart")
+        btn = document.querySelectorAll('.btn')
+        playerChoice = document.querySelector('.playerValue')
+        computerChoice = document.querySelector('.computerValue')
+        playerScore = document.querySelector(".pScore");
+        computerScore = document.querySelector(".cScore");
+        playerScore.innerText = 0
+        computerScore.innerText = 0
+        winner = document.querySelector(".declare")
+        endDisplay = document.querySelector(".modal")
+        overlay = document.querySelector(".overlay")
+
+        let status = document.querySelector('.status')
+
+        btn.forEach(button => {
+            button.addEventListener('mousedown', (e) => {
+                button.classList.add("btn-active");
+            })
+        });
+
+        btn.forEach(button => {
+            button.addEventListener('mouseup', (e) => {
+                button.classList.remove("btn-active");
+            })
+        });
+
+        btn.forEach(button => {
+            button.addEventListener('click', (e) => {
+                let computerSelection = randomChoice();
+
+                // player and computer choice to be shown on screen
+                playerChoice.textContent = e.target.id
+                computerChoice.textContent = computerSelection
+
+                if (computerScore.innerText > 4 || playerScore.innerText > 4) {
+                    playerChoice.textContent = "End";
+                    computerChoice.textContent = "End";
+                    restart.textContent = "Replay"
+                    btn.forEach(button => {
+                        button.style.display = "none";
+                    })
+
+                    endGame();
+                    overlay.style.display="inline-block"
+                    return false
+                }
+                playRound(playerChoice.textContent, computerChoice.textContent)
+
+
+
+            })
+        });
+
+
+        
+
+
+        restart.addEventListener("click", (e) => {
+            computerScore.innerText = 0;
+            playerScore.innerText = 0;
+            status.textContent = "Battle";
+            playerChoice.textContent = "--";
+            computerChoice.textContent = "--";
+            btn.forEach(button => {
+                button.style.display = "inline-block";
+            })
+            endDisplay.style.display = "none";
+            status.style.display = "flex";
+            overlay.style.display="none"
+        })
+
 
         function playRound(playerSelection, computerSelection) {
-            if (playerSelection === computerSelection) {
-                roundStatus = `YOU DREW! ${playerSelection} VS ${computerSelection}`;
-                roundWinner = "draw";
-                return { roundStatus, roundWinner };
-            }
 
-            if (
+
+            if (playerSelection === computerSelection) {
+                roundStatus = `Tie Game! ${playerSelection} VS ${computerSelection}`;
+                roundWinner = "tie";
+                status.textContent = "Tie Game";
+                console.log(roundStatus, roundWinner)
+            } else if (
                 (playerSelection === "rock" && computerSelection === "scissors") ||
                 (playerSelection === "scissors" && computerSelection === "paper") ||
                 (playerSelection === "paper" && computerSelection === "rock")
             ) {
                 roundStatus = `YOU WON! ${playerSelection} Beats ${computerSelection} `;
                 roundWinner = "player";
-                return { roundStatus, roundWinner };
-            }
-
-            if (
+                playerScore.innerText++;
+                status.textContent = "Player win";
+                console.log(roundStatus, roundWinner)
+            } else if (
                 (computerSelection === "rock" && playerSelection === "scissors") ||
                 (computerSelection === "scissors" && playerSelection === "paper") ||
                 (computerSelection === "paper" && playerSelection === "rock")
             ) {
                 roundStatus = `YOU Loss! ${computerSelection} Beats ${playerSelection}`;
                 roundWinner = "computer";
-                return { roundStatus, roundWinner };
+                computerScore.innerText++;
+                status.textContent = "Computer win";
+                console.log(roundStatus, roundWinner)
             } else {
                 alert("select the right value");
             }
 
-            //console.log(updateRoundStatus(roundWinner, playerSelection, computerSelection));
+            // console.log(updateRoundStatus(roundWinner, playerSelection, computerSelection));
         }
 
-        let playerScore = 0;
-        let computerScore = 0;
-        let roundStatus = "";
-        let roundWinner = "";
 
-
-        console.log(game());
-
-        // PLAYERS and COMPUTER CHOICE
-        function randomChoice() {
-            let choice = ["rock", "paper", "scissors"];
-            random = choice[Math.floor(Math.random() * choice.length)];
-            return random.toLowerCase();
-        }
-        function playerChoice() {
-            return prompt("whats your choice").toLowerCase();
-        }
 
 
     </script>
 </body>
+
 </html>
