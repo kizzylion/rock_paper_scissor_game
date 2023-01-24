@@ -265,11 +265,12 @@ footer{
 
     .declare{
         font-size: 0.75em;
-        color: rgb(13, 13, 13);
+        color: bisque;
     }
 
     .restart{
         font-size: 0.75em;
+        color: rgb(13, 13, 13);
     }
 
     .fa-solid{
