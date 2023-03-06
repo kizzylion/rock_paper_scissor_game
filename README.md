@@ -6,4 +6,4 @@ THis is a simple implementation of grade-school classic "rock paper scissor" gam
 if you dont know what that is link >> https://www.wikihow.com/Play-Rock,-Paper,-Scissors
 this game will be played against the computer.
 
-
+live Demo: https://kizzylion.github.io/Etch-A-Sketch/
